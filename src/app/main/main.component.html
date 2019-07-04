@@ -1,0 +1,47 @@
+<div class="container-fluid">
+  <div class="row">
+
+  <div class="col-12 fixed-top bg-light">
+    <div class="row p-3">
+      <h3 class="col-2" style="display: inline;">Movies Reviews</h3>
+      <form class="col-8 form-inline" style="display: inline;">
+        <input [(ngModel)]="query" name="searchQuery" class="form-control" style="width: 550px; display: inline;" type="search" placeholder="Search" aria-label="Search">
+        <button (click)="onClickSearch()" class="btn btn-outline-primary ml-2" style="display: inline;" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-12 p-2">
+  </div>
+
+  <div class="col-12 mt-5">
+    <div *ngIf="!showMovies" class="col-7 offset-2 mt-4 ">
+      <div class="sonar-wrapper">
+        <div class="sonar-emitter">
+          <div class="sonar-wave"></div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showMovies" class="col-6 offset-2 mt-4">
+      <a  class="list-group-item list-group-item-action align-items-start"
+          *ngFor="let movie of movies"
+          routerLink="/movieDetail/{{movie.id}}">
+        <div class="row">
+          <img class="col-2" style="height:100%" src="https://image.tmdb.org/t/p/w400{{movie.poster_path}}" alt="">
+          <div class="col-10">
+            <div class="d-flex w-100 justify-content-between">
+              <h4 class="mb-1">{{movie.title}}</h4>
+              <small class="text-muted">Release date: {{movie.release_date}}</small>
+            </div>
+            <span class="mb-3 badge badge-warning">Puntaje: {{movie.vote_average}}</span>
+            <p class="mb-1">{{movie.overview}}</p>
+            <span class="badge badge-success">182 Likes</span>
+            <span class="badge badge-info ml-2">20 Reviews</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+    </div>
+</div>

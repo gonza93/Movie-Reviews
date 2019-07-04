@@ -1,0 +1,90 @@
+<div class="container-fluid">
+  <div class="row bg-light p-3">
+    <h3 class="col-2 align-middle" style="display: inline;">Movies Details</h3>
+  </div>
+
+  <div class="row">
+    <div class="col-7 p-3">
+      <div class="row">
+        <div class="col-4">
+            <img class="rounded" width="100%" src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}" alt="">
+        </div>
+        <div class="col-8">
+          <h2 class="col-12"><b>{{movie.title}}</b></h2>
+          <div class="col-12 mb-4">
+            <span class="badge badge-warning">Puntaje: {{movie.vote_average}}</span>
+          </div>
+          <p class="col-12"><b>Overview</b></p>
+          <p class="col-12 mb-3">{{movie.overview}}</p>
+
+          <div class="col-12" *ngFor="let person of crew">
+            <div class="row mt-2 ml-3" *ngIf="person.job == 'Director'">
+              <div class="card">
+                <img class="rounded" height="120px" width="90px"
+                src="https://image.tmdb.org/t/p/w200{{person.profile_path}}">
+              </div>
+
+              <div class="col-6 pt-2">
+                <span><b>{{person.name}}</b></span>
+                <span style="display:block;">{{person.job}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="row col-12 mt-2 ml-2"><b>Cast</b></h2>
+
+        <div *ngFor="let actor of cast;  let i=index" >
+          <div style="width:132px; height:270px;" class="card mt-2 ml-3"  *ngIf="actor.profile_path && i < 12">
+            <img  class="rounded-top" height="180px" width="130px"
+            src="https://image.tmdb.org/t/p/w200{{actor.profile_path}}" alt="Card image cap">
+            <span class="card-text m-1" ><b>{{actor.name}}</b></span>
+            <span class="card-text ml-1" >{{actor.character}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-5 mt-2">
+      <h2><b>Reviews</b></h2>
+      <div class="list-group mt-4 mr-3">
+        <a *ngFor="let review of reviews;  let i=index" class="list-group-item list-group-item-action flex-column align-items-start m-2">
+          <div id="fadein" class="row">
+            <img class="col-1 mt-3" height="28px" src="../../assets/person.svg">
+
+            <div class="col-10">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{review.usuario}}</h5>
+                <small>{{review.fecha}}</small>
+              </div>
+              <p class="mb-1">{{review.texto}}</p>
+              <button (click)='onClickLike(i)' class="btn btn-outline-primary mt-2">{{review.likes}} Likes</button>
+            </div>
+          </div>
+        </a>
+
+        <div class="fade" *ngIf="insertedReview" class="m-2">
+          <h5 class="mt-3">Write your own review</h5>
+          <div class="mt-1 input-group" style="width: 240px">
+            <div class="input-group-prepend">
+              <span class="input-group-text">@</span>
+            </div>
+            <input [(ngModel)]="newReview.usuario" type="text" class="form-control" [class.is-invalid]="newReview.usuario == ''"  placeholder="Username"  >
+            <div [hidden]='newReview.usuario != ""' class="invalid-feedback">
+              Please choose a username.
+            </div>
+          </div>
+          <div class="form-group mt-3">
+            <label [ngStyle]="{'color': 160 - newReview.texto.length < 0 ? 'red' : 'black'}">Caracteres restantes: {{160 - newReview.texto.length}}</label>
+            <textarea [(ngModel)]="newReview.texto" type="text" class="form-control" [class.is-invalid]="160 - newReview.texto.length < 0"
+            style="height: 120px; width: 500px" placeholder="Write your review here"></textarea>
+          </div>
+          <button (click)='onClickPostReview()' type="submit" [attr.disabled]="160 - newReview.texto.length < 0 ? '' : null"
+            class="col-2 btn btn-primary">Submit</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
